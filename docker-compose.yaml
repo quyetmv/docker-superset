@@ -1,0 +1,52 @@
+version: "3.7"
+services:
+  superset:
+    env_file: app_env
+    image: superset:v1.3.2
+    container_name: superset_app
+    command: ["/app/docker/docker-bootstrap.sh", "app-gunicorn"]
+    user: "root"
+    restart: always
+    network_mode: host
+    volumes:
+      - /etc/hosts:/etc/hosts
+      - /etc/localtime:/etc/localtime
+      - ./conf/:/app/pythonpath
+
+  superset-init:
+    image: superset:v1.3.2
+    container_name: superset_init
+    command: ["/app/docker/docker-init.sh"]
+    env_file: app_env
+    user: "root"
+    network_mode: host
+    volumes:
+      - /etc/hosts:/etc/hosts
+      - /etc/localtime:/etc/localtime
+      - ./conf/:/app/pythonpath
+
+  superset-worker:
+    image: superset:v1.3.2
+    container_name: superset_worker
+    command: ["/app/docker/docker-bootstrap.sh", "worker"]
+    env_file: app_env
+    restart: always
+    user: "root"
+    network_mode: host
+    volumes:
+      - /etc/hosts:/etc/hosts
+      - /etc/localtime:/etc/localtime
+      - ./conf/:/app/pythonpath
+
+  superset-worker-beat:
+    image: superset:v1.3.2
+    container_name: superset_worker_beat
+    command: ["/app/docker/docker-bootstrap.sh", "beat"]
+    env_file: app_env
+    restart: always
+    user: "root"
+    network_mode: host
+    volumes:
+      - /etc/hosts:/etc/hosts
+      - /etc/localtime:/etc/localtime
+      - ./conf/:/app/pythonpath
