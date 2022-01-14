@@ -25,6 +25,7 @@ RUN wget -qO /tmp/superset.tar.gz https://github.com/apache/superset/archive/$SU
     && touch superset/static/version_info.json \
     && pip install --no-cache -r requirements/local.txt
 
+
 ######################################################################
 # Node stage to deal with static asset construction
 ######################################################################
@@ -107,6 +108,7 @@ ARG FIREFOX_VERSION=88.0
 
 COPY --from=superset-py /app/requirements /app/requirements
 COPY --from=superset-py /app/docker /app/docker
+COPY custom-requirements.txt /app/requirements/custom-requirements.txt
 
 USER root
 
@@ -137,7 +139,8 @@ RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd6
 # Cache everything for dev purposes...
 RUN cd /app \
     && pip install --no-cache -r requirements/docker.txt \
-    && pip install --no-cache -r requirements/local.txt || true    \
+    && pip install --no-cache -r requirements/local.txt || true \
+    && pip install --no-cache -r /app/requirements/custom-requirements.txt \
     && chmod a+x /app/docker/*.sh
 
 USER superset
