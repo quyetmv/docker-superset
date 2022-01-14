@@ -2,6 +2,8 @@ COMPOSE_PROJECT_NAME=superset
 
 # database engine specific environment variables
 # change the below if you prefers another database engine
+
+DATABASE_DB={{superset_database_name}}
 DATABASE_HOST={{superset_database_host}}
 DATABASE_PORT={{superset_database_port}}
 DATABASE_USER={{superset_database_user}}
@@ -11,9 +13,9 @@ POSTGRES_DB={{superset_database_name}}
 POSTGRES_USER={{superset_database_user}}
 POSTGRES_PASSWORD={{superset_database_pass}}
 
-
+/usr/local/lib/python3.8/site-packages
 # Add the mapped in /app/pythonpath_docker which allows devs to override stuff
-PYTHONPATH=/app/pythonpath:/app/docker/pythonpath_dev
+SUPERSET_CONFIG_PATH={{superset_config_path}}
 REDIS_HOST={{superset_redis_host}}
 REDIS_PORT={{superset_redis_port}}
 REDIS_PASSWORD={{redis_vault_password}}
@@ -23,7 +25,9 @@ FLASK_ENV={{superset_env}}
 SUPERSET_ENV={{superset_env}}
 SUPERSET_LOAD_EXAMPLES=yes
 CYPRESS_CONFIG=false
-SUPERSET_PORT=8088
+SUPERSET_PORT=8099
+SUPERSET_WEBSERVER_PORT=8099
+CACHE_REDIS_URL='redis://:{{redis_vault_password}}@{{superset_redis_host}}:{{superset_redis_port}}/{{superset_redis_db}}'
 
 SMTP_HOST={{superset_smtp_host}}
 SMTP_STARTTLS={{superset_smtp_starttls}}

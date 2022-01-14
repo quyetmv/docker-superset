@@ -11,7 +11,9 @@ services:
     volumes:
       - /etc/hosts:/etc/hosts
       - /etc/localtime:/etc/localtime
-      - ./conf/:/app/pythonpath
+      - {{superset_conf_dir}}:/app/pythonpath
+      - {{superset_conf_dir}}/config.py:/etc/superset/config.py
+      - {{superset_conf_dir}}/superset_config.py:/etc/superset/superset_config.py
 
   superset-init:
     image: quyetmv/superset:v1.3.2
@@ -23,7 +25,9 @@ services:
     volumes:
       - /etc/hosts:/etc/hosts
       - /etc/localtime:/etc/localtime
-      - ./conf/:/app/pythonpath
+      - {{superset_conf_dir}}:/app/pythonpath
+      - {{superset_conf_dir}}/config.py:/etc/superset/config.py
+      - {{superset_conf_dir}}/superset_config.py:/etc/superset/superset_config.py
 
   superset-worker:
     image: quyetmv/superset:v1.3.2
@@ -36,7 +40,9 @@ services:
     volumes:
       - /etc/hosts:/etc/hosts
       - /etc/localtime:/etc/localtime
-      - ./conf/:/app/pythonpath
+      - {{superset_conf_dir}}:/app/pythonpath
+      - {{superset_conf_dir}}/config.py:/etc/superset/config.py
+      - {{superset_conf_dir}}/superset_config.py:/etc/superset/superset_config.py
 
   superset-worker-beat:
     image: quyetmv/superset:v1.3.2
@@ -49,4 +55,6 @@ services:
     volumes:
       - /etc/hosts:/etc/hosts
       - /etc/localtime:/etc/localtime
-      - ./conf/:/app/pythonpath
+      - {{superset_conf_dir}}:/app/pythonpath
+      - {{superset_conf_dir}}/config.py:/etc/superset/config.py
+      - {{superset_conf_dir}}/superset_config.py:/etc/superset/superset_config.py

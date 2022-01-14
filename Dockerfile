@@ -25,7 +25,6 @@ RUN wget -qO /tmp/superset.tar.gz https://github.com/apache/superset/archive/$SU
     && touch superset/static/version_info.json \
     && pip install --no-cache -r requirements/local.txt
 
-
 ######################################################################
 # Node stage to deal with static asset construction
 ######################################################################
@@ -63,7 +62,7 @@ ENV LANG=C.UTF-8 \
     FLASK_ENV=production \
     FLASK_APP="superset.app:create_app()" \
     PYTHONPATH="/app/pythonpath" \
-    SUPERSET_HOME="/app/superset_home" \
+    SUPERSET_HOME="/app" \
     SUPERSET_PORT=8088
 
 RUN mkdir -p ${PYTHONPATH} \
@@ -108,7 +107,7 @@ ARG FIREFOX_VERSION=88.0
 
 COPY --from=superset-py /app/requirements /app/requirements
 COPY --from=superset-py /app/docker /app/docker
-COPY custom-requirements.txt /app/requirements/custom-requirements.txt
+COPY customize-requirements.txt /app/requirements/customize-requirements.txt
 
 USER root
 
@@ -139,8 +138,9 @@ RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd6
 # Cache everything for dev purposes...
 RUN cd /app \
     && pip install --no-cache -r requirements/docker.txt \
-    && pip install --no-cache -r requirements/local.txt || true \
-    && pip install --no-cache -r /app/requirements/custom-requirements.txt \
+    && pip install --no-cache -r requirements/local.txt || true    \
+    && pip install --no-cache -r /app/requirements/customize-requirements.txt \
+    && pip install --no-cache sqlalchemy-trino  \
     && chmod a+x /app/docker/*.sh
 
 USER superset
